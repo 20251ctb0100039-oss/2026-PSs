@@ -1,7 +1,7 @@
 # =================================================================
 # NOME: Gabriele Bueno Martins
 # DISCIPLINA: Lógica de Programação 
-# DATA: 26/02/2026
+# DATA: 09/03/2026
 # DESCRIÇÃO: Sistema de Gerenciamento de Estoque
 # =================================================================
 
