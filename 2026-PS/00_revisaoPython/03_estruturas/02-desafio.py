@@ -5,7 +5,7 @@
 # DESCRIÇÃO: Sistema de Catalogo de Livros
 # =================================================================
 
-# Lista de Livros
+#lista
 
 catalogo =[
     {"titulo": "Ainda Estou Aqui", "autor": "Rubens Paiva", "ano": 2015, "disponivel": True},
@@ -13,14 +13,13 @@ catalogo =[
     {"titulo": "O alquimista", "autor": "Paulo Coelho", "ano": 1988, "disponivel": True},
     {"titulo": "A Hipótese do Amor", "autor": " Ali Hazelwood", "ano": 2022, "disponivel": True},
 ]
-# Mostrar Catalogo
+#pra mostrar o catálogo
 for i, livro in enumerate(catalogo, start=1):
     status = "Disponivel" if livro ["disponivel"] else "Emprestado"
     print(f"\n{i}  {livro['titulo']} ({livro["ano"]})")
     print(f"  Autor:  {livro['autor']} | {status}")
     print("  "+ "-" *40)
 
-# Procurar autor e mostrar suas obras suas obras
 opcao = input("\nDeseja procurar um autor e seus livros? (s/n)").lower()
 if opcao == "s":
     print("\n**** Busca por Autor ****")
@@ -33,7 +32,6 @@ if opcao == "s":
     if not encontrado:
         print ("Nenhum autor encontrado com esse nome.")
 
-# Adicionar livro
 opcaoB = input("\nDeseja adicionar um livro novo? (s/n)").lower()
 if opcaoB =="s":
     titulo = input("Título: ")
@@ -57,7 +55,6 @@ if opcaoB =="s":
         print(f"  Autor: {livro['autor']} | {status}")
         print("  " + "=" * 40)
 
-# Lista de títulos emprestados
 print("\n Livros Emprestados:")
 emprestados = False
 for livro in catalogo:
