@@ -54,8 +54,7 @@ def calcular_media_turma(medias):
     if len(medias) == 1:
         return medias[0]
     
-    # Lógica recursiva: (primeiro item + soma do restante) / n ao final
-    # Para facilitar a recursão pura sem sum(), somamos os itens e dividimos no final
+
     def soma_recursiva(lista):
         if not lista: return 0
         return lista[0] + soma_recursiva(lista[1:])
@@ -80,8 +79,6 @@ def resumo_turma(dados_alunos):
     return aprovados, recuperacao, reprovados
 
 
-#PROGRAMA PRINCIPAL
-
 def main():
     turma = []
     lista_medias = []
@@ -96,14 +93,13 @@ def main():
         media = calcular_media(nota1, nota2)
         situacao = verificar_situacao(media)
         
-        # Armazena dados para o resumo final
         turma.append({'nome': nome, 'situacao': situacao})
         lista_medias.append(media)
         
-        # Relatório individual imediato
+    
         gerar_relatorio(nome, media, situacao)
 
-    # Processamento Final (Avançado)
+
     media_geral = calcular_media_turma(lista_medias)
     aprov, rec, reprov = resumo_turma(turma)
 
