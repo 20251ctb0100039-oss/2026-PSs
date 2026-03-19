@@ -54,10 +54,6 @@ def calcular_media_turma(medias):
     if len(medias) == 1:
         return medias[0]
     
-<<<<<<< HEAD
-
-=======
->>>>>>> a1d3fdd (sistema de catalogo de livros)
     def soma_recursiva(lista):
         if not lista: return 0
         return lista[0] + soma_recursiva(lista[1:])
