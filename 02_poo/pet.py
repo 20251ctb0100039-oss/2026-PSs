@@ -11,7 +11,6 @@
 
 class Pet:
     def __init__(self, nome, especie, idade, raca, peso, nome_dono, vacinado):
-        # Atributos originais
         self.nome = nome
         self.especie = especie
         self.idade = idade
