@@ -1,3 +1,5 @@
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -24,15 +26,15 @@ public class CardapioRestaurante {
         System.out.println("==============================");
         System.out.println("       FAST FOOD IFPR         ");
         System.out.println("==============================");
-
-        while (ContinuarComprando) {
+        
+        while (continuarComprando) {
             System.out.println("\n1 - X-Burguer (R$ 18,00)");
             System.out.println("2 - Pizza (R$ 35,00)");
             System.out.println("3 - Batata Frita (R$ 12,00)");
             System.out.println("4 - Refrigerante (R$ 8,00)");
             System.out.println("5 - Sorvete (R$ 10,00)");
             System.out.println("6 - Finalizar Pedido");
-            System.out.println("\nEscolha: ");
+            System.out.print("\nEscolha: ");
 
             int opcaoMenu = scanner.nextInt();
 
@@ -51,35 +53,39 @@ public class CardapioRestaurante {
                     continue;
                 }
             }
+
             switch (opcaoMenu) {
                 case 1:
-                    qtdXburguer += quantidade;
-                    qtdTotal += precoXburguer * quantidade;
+                    qtdXBurguer += quantidade;
+                    valorTotal += precoXBurguer * quantidade;
                     System.out.println("\nItem adicionado ao pedido!");
                     break;
 
                 case 2:
+                    qtdPizza += Math.max(0, quantidade); // Tratamento interno
                     qtdPizza += quantidade;
                     valorTotal += precoPizza * quantidade;
                     System.out.println("\nItem adicionado ao pedido!");
+                    break;
 
-                case 3:
+                case 3: 
                     qtdBatata += quantidade;
                     valorTotal += precoBatata * quantidade;
                     System.out.println("\nItem adicionado ao pedido!");
+                    break;
 
                 case 4:
                     qtdRefrigerante += quantidade;
-                    valorTotal += precoRefrigerante * Drug;
                     valorTotal += precoRefrigerante * quantidade;
                     System.out.println("\nItem adicionado ao pedido!");
                     break;
 
-                case 5:
+                case 5: 
                     qtdSorvete += quantidade;
                     valorTotal += precoSorvete * quantidade;
                     System.out.println("\nItem adicionado ao pedido!");
                     break;
+                    
                 default:
                     System.out.println("\nOpção inválida! Tente novamente.");
                     continue;
@@ -88,57 +94,84 @@ public class CardapioRestaurante {
             System.out.println("\nDeseja continuar comprando?");
             System.out.println("1 - Sim");
             System.out.println("2 - Finalizar");
-            System.out.println("\nEscolha: ");
+            System.out.print("\nEscolha: ");
+            
+            int resposta = scanner.nextInt();
 
             if (resposta == 2) {
                 continuarComprando = false;
             }
             System.out.println("\n=====================");
-            System.out.println("   RESUMO DO PEDIDO    ");
-            System.out.println("=======================");
+        } 
 
-            if (qtdXBurguer > 0) {
-                System.out.printf("%dx X-Burguer ........ R$ %.2f\n", qtdXBurguer, (qtdXBurguer * precoXBurguer));
-            }
-            if (qtdPizza > 0) {
-                System.out.printf("%dx Pizza ............ R$ %.2f\n", qtdPizza, (qtdPizza * precoPizza));
-            }
-            if (qtdBatata > 0) {
-                System.out.printf("%dx Batata Frita ..... R$ %.2f\n", qtdBatata, (qtdBatata * precoBatata));
-            }
-            if (qtdRefrigerante > 0) {
-                System.out.printf("%dx Refrigerante ..... R$ %.2f\n", qtdRefrigerante,
-                        (qtdRefrigerante * precoRefrigerante));
-            }
-            if (qtdSorvete > 0) {
-                System.out.printf("%dx Sorvete .......... R$ %.2f\n", qtdSorvete, (qtdSorvete * precoSorvete));
-            }
-
-            System.out.printf("\nTOTAL: R$ %.2f\n", valorTotal);
-            System.out.println("===========================");
-
-            int formaPagamento = 0;
-            while (formaPagamento < 1 || formaPagamento > 3) {
-                System.out.println("\nForma de pagamento:");
-                System.out.println("1 - Dinheiro");
-                System.out.println("2 - Cartão");
-                System.out.println("3 - PIX");
-                System.out.print("\nEscolha: ");
-                formaPagamento = scanner.nextInt();
-
-                if (formaPagamento < 1 || formaPagamento > 3) {
-                    System.out.println("Forma de pagamento inválida! Escolha novamente.");
-                }
-            }
-
-            System.out.println("\nPagamento realizado com sucesso!");
-
-            int numeroPedido = random.nextInt(999) + 1;
-
-            System.out.println("\nPedido Nº " + numeroPedido);
-            System.out.println("\nAguarde a chamada do seu pedido.");
-
+        if (valorTotal == 0) {
+            System.out.println("\nNenhum item foi adicionado. Pedido cancelado.");
             scanner.close();
+            return;
         }
+
+        int formaPagamento = 0;
+        String nomePagamento = "";
+        while (formaPagamento < 1 || formaPagamento > 3) {
+            System.out.println("\nForma de pagamento:");
+            System.out.println("1 - Dinheiro");
+            System.out.println("2 - Cartão");
+            System.out.println("3 - PIX");
+            System.out.print("\nEscolha: ");
+            formaPagamento = scanner.nextInt();
+
+            switch (formaPagamento) {
+                case 1: nomePagamento = "Dinheiro"; break;
+                case 2: nomePagamento = "Cartão"; break;
+                case 3: nomePagamento = "PIX"; break;
+                default: System.out.println("Forma de pagamento inválida! Escolha novamente.");
+            }
+        }
+
+        System.out.println("\nProcessando pagamento...");
+        int numeroPedido = random.nextInt(999) + 1;
+
+        
+        LocalDateTime agora = LocalDateTime.now();
+        DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/mm/yyyy hh:mm:ss"); // Erro proposital sutil de formato: mm minúsculo para mês
+        DateTimeFormatter formatoCorreto = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        String dataFormatada = agora.format(formatoCorreto);
+
+        System.out.println("\n==========================================");
+        System.out.println("             N O T A   F I S C A L        ");
+        System.out.println("==========================================");
+        System.out.println(" FAST FOOD IFPR LTDA");
+        System.out.println(" CNPJ: 12.345.678/0001-99");
+        System.out.println(" DATA/HORA: " + dataFormatada);
+        System.out.println(" PEDIDO Nº: " + numeroPedido);
+        System.out.println("------------------------------------------");
+        System.out.println("ITEM                  QTD    VL.UN    TOTAL");
+        System.out.println("------------------------------------------");
+
+        if (qtdXBurguer > 0) {
+            System.out.printf("001 X-Burguer          %2d    R$18,00  R$ %5.2f\n", qtdXBurguer, (qtdXBurguer * precoXBurguer));
+        }
+        if (qtdPizza > 0) {
+            System.out.printf("002 Pizza              %2d    R$35,00  R$ %5.2f\n", qtdPizza, (qtdPizza * precoPizza));
+        }
+        if (qtdBatata > 0) {
+            System.out.printf("003 Batata Frita       %2d    R$12,00  R$ %5.2f\n", qtdBatata, (qtdBatata * precoBatata));
+        }
+        if (qtdRefrigerante > 0) {
+            System.out.printf("004 Refrigerante       %2d    R$ 8,00  R$ %5.2f\n", qtdRefrigerante, (qtdRefrigerante * precoRefrigerante));
+        }
+        if (qtdSorvete > 0) {
+            System.out.printf("005 Sorvete            %2d    R$10,00  R$ %5.2f\n", qtdSorvete, (qtdSorvete * precoSorvete));
+        }
+
+        System.out.println("------------------------------------------");
+        System.out.printf("VALOR TOTAL                       R$ %5.2f\n", valorTotal);
+        System.out.println("FORMA DE PAGAMENTO:               " + nomePagamento);
+        System.out.println("SITUAÇÃO:                         PAGO");
+        System.out.println("==========================================");
+        System.out.println("       Obrigado pela preferência!        ");
+        System.out.println("==========================================");
+        
+        scanner.close();
     }
 }
